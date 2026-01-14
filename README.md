@@ -45,5 +45,5 @@ Mauricia etaba
 
 ### 1️⃣ Cloner le dépôt
 ```bash
-git clone https://github.com/USERNAME/projet_groupe2.git
+git clone https://github.com/Maurice-enkoura/projet_groupe2.git
 cd projet_groupe2
