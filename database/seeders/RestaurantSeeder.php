@@ -22,16 +22,16 @@ class RestaurantSeeder extends Seeder
             'email' => 'admin@restaurant.com',
             'password' => Hash::make('password'),
             'role' => 'admin',
-            'telephone' => '0123456789',
+            'telephone' => '77 123 45 67',
             'adresse' => 'Dakar Plateau'
         ]);
 
         $client = User::create([
-            'name' => 'Client Test',
+            'name' => 'Moussa Ndiaye',
             'email' => 'client@test.com',
             'password' => Hash::make('password'),
             'role' => 'user',
-            'telephone' => '0987654321',
+            'telephone' => '78 456 78 90',
             'adresse' => 'Parcelles Assainies'
         ]);
 
@@ -41,22 +41,25 @@ class RestaurantSeeder extends Seeder
 
         $menuJour = Menu::create([
             'nom' => 'Menu du Jour',
-            'description' => 'Plat + Boisson',
+            'description' => 'Plat sénégalais + Boisson',
             'prix' => 6500,
+            'image' => 'images/menus/menu-jour.jpg',
             'est_disponible' => true
         ]);
 
         $menuVeg = Menu::create([
             'nom' => 'Menu Végétarien',
-            'description' => '100% légumes frais',
+            'description' => 'Cuisine saine 100% végétale',
             'prix' => 5500,
+            'image' => 'images/menus/menu-vegetarien.jpg',
             'est_disponible' => true
         ]);
 
         $menuPremium = Menu::create([
             'nom' => 'Menu Premium',
-            'description' => 'Entrée + Plat + Dessert',
+            'description' => 'Entrée + Plat + Dessert gastronomique',
             'prix' => 8500,
+            'image' => 'images/menus/menu-premium.jpg',
             'est_disponible' => true
         ]);
 
@@ -65,56 +68,89 @@ class RestaurantSeeder extends Seeder
          * ======================= */
 
         $plats = [
-            // Menu du Jour
-            ['nom' => 'Poulet Braisé', 'description' => 'Poulet braisé à la sénégalaise', 'prix' => 3500, 'menu_id' => $menuJour->id, 'stock' => 30, 'categorie' => 'principal'],
-            ['nom' => 'Salade César', 'description' => 'Salade fraîche avec poulet grillé', 'prix' => 1800, 'menu_id' => $menuJour->id, 'stock' => 20, 'categorie' => 'entree'],
+            // MENU DU JOUR
+            [
+                'nom' => 'Poulet Braisé',
+                'description' => 'Poulet braisé au feu de bois, marinade maison',
+                'prix' => 3500,
+                'menu_id' => $menuJour->id,
+                'stock' => 40,
+                'categorie' => 'principal',
+                'image' => 'images/plats/poulet-braise.jpg'
+            ],
+            [
+                'nom' => 'Salade César',
+                'description' => 'Salade fraîche, poulet grillé, sauce césar',
+                'prix' => 1800,
+                'menu_id' => $menuJour->id,
+                'stock' => 25,
+                'categorie' => 'entree',
+                'image' => 'images/plats/salade-cesar.jpg'
+            ],
 
-            // Menu Végétarien
-            ['nom' => 'Riz aux légumes', 'description' => 'Riz parfumé aux légumes sautés', 'prix' => 2800, 'menu_id' => $menuVeg->id, 'stock' => 25, 'categorie' => 'principal'],
-            ['nom' => 'Soupe de légumes', 'description' => 'Soupe chaude 100% naturelle', 'prix' => 1500, 'menu_id' => $menuVeg->id, 'stock' => 15, 'categorie' => 'entree'],
+            // MENU VÉGÉTARIEN
+            [
+                'nom' => 'Riz aux Légumes',
+                'description' => 'Riz parfumé, légumes sautés bio',
+                'prix' => 2800,
+                'menu_id' => $menuVeg->id,
+                'stock' => 30,
+                'categorie' => 'principal',
+                'image' => 'images/plats/riz-legumes.jpg'
+            ],
+            [
+                'nom' => 'Soupe de Légumes',
+                'description' => 'Soupe chaude, carottes, pommes de terre, poireaux',
+                'prix' => 1500,
+                'menu_id' => $menuVeg->id,
+                'stock' => 20,
+                'categorie' => 'entree',
+                'image' => 'images/plats/soupe-legumes.jpg'
+            ],
 
-            // Menu Premium
-            ['nom' => 'Filet de bœuf grillé', 'description' => 'Filet de bœuf tendre et juteux', 'prix' => 4200, 'menu_id' => $menuPremium->id, 'stock' => 15, 'categorie' => 'principal'],
-            ['nom' => 'Gâteau au chocolat', 'description' => 'Dessert maison au chocolat', 'prix' => 1800, 'menu_id' => $menuPremium->id, 'stock' => 20, 'categorie' => 'dessert'],
+            // MENU PREMIUM
+            [
+                'nom' => 'Filet de Bœuf Grillé',
+                'description' => 'Filet tendre, sauce au poivre',
+                'prix' => 4200,
+                'menu_id' => $menuPremium->id,
+                'stock' => 15,
+                'categorie' => 'principal',
+                'image' => 'images/plats/filet-boeuf.jpg'
+            ],
+            [
+                'nom' => 'Gâteau au Chocolat',
+                'description' => 'Dessert fondant au chocolat noir',
+                'prix' => 1800,
+                'menu_id' => $menuPremium->id,
+                'stock' => 20,
+                'categorie' => 'dessert',
+                'image' => 'images/plats/gateau-chocolat.jpg'
+            ],
         ];
 
-        foreach ($plats as &$platData) {
+        foreach ($plats as $platData) {
             $platData['est_disponible'] = true;
-            $platData['created_at'] = now();
-            $platData['updated_at'] = now();
             Plat::create($platData);
         }
 
         /* =======================
-         * COMMANDES – TEST
+         * COMMANDES (RÉALISTES)
          * ======================= */
 
-        $allPlats = Plat::all();
+        $plats = Plat::all();
 
-        // On crée quelques commandes pour le client
-        foreach ($allPlats as $plat) {
+        foreach ($plats as $plat) {
+            $quantite = rand(1, 3);
+
             Commande::create([
                 'user_id' => $client->id,
                 'plat_id' => $plat->id,
-                'quantite' => rand(1, 3),
+                'quantite' => $quantite,
                 'prix_unitaire' => $plat->prix,
-                'total' => $plat->prix * rand(1, 3),
+                'total' => $plat->prix * $quantite,
                 'statut' => 'en_attente',
-                'notes' => 'Commande de test',
-                'date_commande' => now()
-            ]);
-        }
-
-        // Et quelques commandes pour l'admin (si tu veux tester dashboard admin)
-        foreach ($allPlats as $plat) {
-            Commande::create([
-                'user_id' => $admin->id,
-                'plat_id' => $plat->id,
-                'quantite' => rand(1, 2),
-                'prix_unitaire' => $plat->prix,
-                'total' => $plat->prix * rand(1, 2),
-                'statut' => 'confirmee',
-                'notes' => 'Commande de test admin',
+                'notes' => 'Commande passée via le site',
                 'date_commande' => now()
             ]);
         }

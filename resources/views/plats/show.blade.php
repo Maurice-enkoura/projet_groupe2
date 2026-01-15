@@ -553,11 +553,13 @@
         <div class="container">
             <div class="plat-detail-container fade-in">
                 <div class="plat-image">
-                    @if($plat->image)
-                    <img src="{{ asset('storage/' . $plat->image) }}" alt="{{ $plat->nom }}">
-                    @else
-                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80" alt="{{ $plat->nom }}">
-                    @endif
+                    @php
+                    $image = ($plat->image && file_exists(public_path($plat->image)))
+                    ? asset($plat->image)
+                    : asset('images/plats/default-plat.jpg');
+                    @endphp
+
+                    <img src="{{ $image }}" alt="{{ $plat->nom }}">
 
                     @if($plat->menu && $plat->menu->nom)
                     <div class="plat-badge">{{ $plat->menu->nom }}</div>
@@ -638,7 +640,7 @@
                             <i class="fas fa-arrow-left"></i> Retour aux plats
                         </a>
                         @if($plat->est_disponible)
-                        <form action="" method="POST">
+                        <form action="" method="">
                             @csrf
                             <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-shopping-cart"></i> Ajouter au panier

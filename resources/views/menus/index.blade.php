@@ -527,7 +527,6 @@
             <li><a href="{{ route('plats.index') }}">Plats</a></li>
 
             @auth
-                {{-- Lien Tableau de bord selon le rôle --}}
                 @if(Auth::user()->isAdmin())
                     <li><a href="{{ route('admin.dashboard') }}">Tableau de bord</a></li>
                 @else
@@ -537,14 +536,10 @@
         </ul>
 
         <div class="auth-buttons">
-            
-
             @guest
-                {{-- Pour les visiteurs non connectés --}}
                 <a href="{{ route('login') }}" class="btn btn-outline">Connexion</a>
                 <a href="{{ route('register') }}" class="btn btn-primary">Inscription</a>
             @else
-                {{-- Pour les utilisateurs connectés --}}
                 <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                     @csrf
                     <button type="submit" class="btn btn-outline" style="padding: 10px 20px;">
@@ -570,11 +565,13 @@
                     @foreach($menus as $menu)
                     <div class="menu-card fade-in">
                         <div class="menu-image">
-                            @if($menu->image)
-                                <img src="{{ asset('storage/' . $menu->image) }}" alt="{{ $menu->nom }}">
-                            @else
-                                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80" alt="{{ $menu->nom }}">
-                            @endif
+                            @php
+                            $image = ($menu->image && file_exists(public_path($menu->image)))
+                                ? asset($menu->image)
+                                : asset('images/menus/default-menu.jpg');
+                            @endphp
+                            
+                            <img src="{{ $image }}" alt="{{ $menu->nom }}">
                         </div>
 
                         <div class="menu-content">

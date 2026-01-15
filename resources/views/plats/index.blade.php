@@ -560,45 +560,43 @@
 
 <body>
     <!-- Header -->
-   <header>
-    <div class="container nav-container">
-        <a href="{{ route('home') }}" class="logo">
-            <div class="logo-icon">
-                <i class="fas fa-utensils"></i>
-            </div>
-            <div class="logo-text">Delice</div>
-        </a>
+    <header>
+        <div class="container nav-container">
+            <a href="{{ route('home') }}" class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <div class="logo-text">Delice</div>
+            </a>
 
-        <ul class="nav-menu">
-            <li><a href="{{ route('home') }}">Accueil</a></li>
-            <li><a href="{{ route('menus.index') }}">Menus</a></li>
-            <li><a href="{{ route('plats.index') }}">Plats</a></li>
+            <ul class="nav-menu">
+                <li><a href="{{ route('home') }}">Accueil</a></li>
+                <li><a href="{{ route('menus.index') }}">Menus</a></li>
+                <li><a href="{{ route('plats.index') }}">Plats</a></li>
 
-            @auth
+                @auth
                 @if(Auth::user()->isAdmin())
-                    <li><a href="{{ route('admin.dashboard') }}">Tableau de bord</a></li>
+                <li><a href="{{ route('admin.dashboard') }}">Tableau de bord</a></li>
                 @else
-                    <li><a href="{{ route('dashboard') }}">Tableau de bord</a></li>
+                <li><a href="{{ route('dashboard') }}">Tableau de bord</a></li>
                 @endif
-            @endauth
-        </ul>
+                @endauth
+            </ul>
 
-        <div class="auth-buttons">
-            
-
-            @guest
+            <div class="auth-buttons">
+                @guest
                 <a href="{{ route('login') }}" class="btn btn-outline">Connexion</a>
                 <a href="{{ route('register') }}" class="btn btn-primary">Inscription</a>
-            @else
+                @else
                 <a href="{{ route('dashboard') }}" class="btn btn-primary">Mon Tableau de bord</a>
                 <form method="POST" action="{{ route('logout') }}" style="display:inline;">
                     @csrf
                     <button type="submit" class="btn btn-outline">Déconnexion</button>
                 </form>
-            @endguest
+                @endguest
+            </div>
         </div>
-    </div>
-</header>
+    </header>
 
     <!-- Plats Section -->
     <section class="section">
@@ -611,82 +609,84 @@
 
             <!-- Filter Section -->
             @if(isset($categories) && count($categories) > 0)
-                <div class="filter-section">
-                    <h3 class="filter-title">Filtrer par catégorie</h3>
-                    <div class="filter-options">
-                        <button class="filter-btn active" data-category="all">Tous</button>
-                        @foreach($categories as $category)
-                            <button class="filter-btn" data-category="{{ $category }}">{{ $category }}</button>
-                        @endforeach
-                    </div>
+            <div class="filter-section">
+                <h3 class="filter-title">Filtrer par catégorie</h3>
+                <div class="filter-options">
+                    <button class="filter-btn active" data-category="all">Tous</button>
+                    @foreach($categories as $category)
+                    <button class="filter-btn" data-category="{{ $category }}">{{ $category }}</button>
+                    @endforeach
                 </div>
+            </div>
             @endif
 
             <div class="plats-grid">
                 @if($plats && $plats->count() > 0)
-                    @foreach($plats as $plat)
-                    <div class="plat-card fade-in" data-category="{{ $plat->categorie ?? 'other' }}">
-                        <div class="plat-image">
-                            @if($plat->image)
-                                <img src="{{ asset('storage/' . $plat->image) }}" alt="{{ $plat->nom }}">
-                            @else
-                                <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80" alt="{{ $plat->nom }}">
-                            @endif
+                @foreach($plats as $plat)
+                <div class="plat-card fade-in" data-category="{{ $plat->categorie ?? 'other' }}">
+                    <div class="plat-image">
+                        @php
+                        $image = ($plat->image && file_exists(public_path($plat->image)))
+                            ? asset($plat->image)
+                            : asset('images/plats/default-plat.jpg');
+                        @endphp
 
-                            @if($plat->menu && $plat->menu->nom)
-                                <div class="plat-badge">{{ $plat->menu->nom }}</div>
-                            @endif
+                        <img src="{{ $image }}" alt="{{ $plat->nom }}">
+
+                        @if($plat->menu && $plat->menu->nom)
+                        <div class="plat-badge">{{ $plat->menu->nom }}</div>
+                        @endif
+                    </div>
+
+                    <div class="plat-content">
+                        <div class="plat-header">
+                            <div>
+                                <h3 class="plat-title">{{ $plat->nom }}</h3>
+                                @if($plat->categorie)
+                                <span class="plat-category">{{ $plat->categorie }}</span>
+                                @endif
+                            </div>
+                            <div class="plat-price">{{ number_format($plat->prix, 2) }} FCFA</div>
                         </div>
 
-                        <div class="plat-content">
-                            <div class="plat-header">
-                                <div>
-                                    <h3 class="plat-title">{{ $plat->nom }}</h3>
-                                    @if($plat->categorie)
-                                    <span class="plat-category">{{ $plat->categorie }}</span>
-                                    @endif
-                                </div>
-                                <div class="plat-price">{{ number_format($plat->prix, 2) }} FCFA</div>
+                        <p class="plat-description">
+                            {{ $plat->description ?? 'Découvrez cette délicieuse spécialité de notre chef.' }}
+                        </p>
+
+                        <div class="plat-footer">
+                            <div class="plat-availability">
+                                @if($plat->est_disponible)
+                                <i class="fas fa-check-circle available"></i>
+                                <span>Disponible</span>
+                                @else
+                                <i class="fas fa-times-circle unavailable"></i>
+                                <span>Indisponible</span>
+                                @endif
                             </div>
 
-                            <p class="plat-description">
-                                {{ $plat->description ?? 'Découvrez cette délicieuse spécialité de notre chef.' }}
-                            </p>
-
-                            <div class="plat-footer">
-                                <div class="plat-availability">
-                                    @if($plat->est_disponible)
-                                    <i class="fas fa-check-circle available"></i>
-                                    <span>Disponible</span>
-                                    @else
-                                    <i class="fas fa-times-circle unavailable"></i>
-                                    <span>Indisponible</span>
-                                    @endif
-                                </div>
-
-                                <div class="plat-actions">
-                                    <a href="{{ route('plats.show', $plat->id) }}" class="action-btn" title="Voir les détails">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-                                </div>
+                            <div class="plat-actions">
+                                <a href="{{ route('plats.show', $plat->id) }}" class="action-btn" title="Voir les détails">
+                                    <i class="fas fa-eye"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
-                    @endforeach
+                </div>
+                @endforeach
                 @else
-                    <div class="empty-state">
-                        <i class="fas fa-utensils"></i>
-                        <h3>Aucun plat disponible</h3>
-                        <p>Les plats seront bientôt ajoutés à notre carte.</p>
-                    </div>
+                <div class="empty-state">
+                    <i class="fas fa-utensils"></i>
+                    <h3>Aucun plat disponible</h3>
+                    <p>Les plats seront bientôt ajoutés à notre carte.</p>
+                </div>
                 @endif
             </div>
 
             <!-- Pagination -->
             @if($plats && $plats->hasPages())
-                <div class="pagination">
-                    {{ $plats->links('pagination::simple-bootstrap') }}
-                </div>
+            <div class="pagination">
+                {{ $plats->links('pagination::simple-bootstrap') }}
+            </div>
             @endif
         </div>
     </section>

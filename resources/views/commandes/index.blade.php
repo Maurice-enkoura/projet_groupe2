@@ -679,7 +679,7 @@
                                             <div class="plat-info">
                                                 <div class="plat-image">
                                                     @if($commande->plat->image)
-                                                        <img src="{{ asset('storage/' . $commande->plat->image) }}" 
+                                                        <img src="{{ asset($commande->plat->image) }}" 
                                                              alt="{{ $commande->plat->nom }}">
                                                     @else
                                                         <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=400&q=80" 
@@ -695,7 +695,7 @@
                                         <td>{{ $commande->created_at->format('d/m/Y H:i') }}</td>
                                         <td>{{ $commande->quantite }}</td>
                                         <td>
-                                            <strong>{{ number_format($commande->total, 2) }} €</strong>
+                                            <strong>{{ number_format($commande->total, 2) }} FCFA</strong>
                                         </td>
                                         <td>
                                             @php

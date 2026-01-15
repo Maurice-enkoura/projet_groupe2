@@ -7,6 +7,7 @@
     <title>Nouvelle Commande - Restaurant Delice</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Styles CSS identiques à ceux que vous avez fournis */
         :root {
             --primary-color: #c41e3a;
             --secondary-color: #1a1a1a;
@@ -584,7 +585,6 @@
                 opacity: 0;
                 transform: translateY(20px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -659,14 +659,17 @@
                             data-plat-name="{{ $platItem->nom }}"
                             data-plat-price="{{ $platItem->prix }}"
                             data-plat-stock="{{ $platItem->stock }}"
-                            data-plat-image="{{ $platItem->image ? asset('storage/' . $platItem->image) : 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=400&q=80' }}"
+                            data-plat-image="{{ $platItem->image ? asset($platItem->image) : 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=400&q=80' }}"
                             data-plat-description="{{ $platItem->description }}">
                             <div class="plat-select-image">
-                                <img src="{{ $platItem->image ? asset('storage/' . $platItem->image) : 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=400&q=80' }}"
-                                    alt="{{ $platItem->nom }}">
+                                @if($platItem->image)
+                                    <img src="{{ asset($platItem->image) }}" alt="{{ $platItem->nom }}">
+                                @else
+                                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=400&q=80" alt="{{ $platItem->nom }}">
+                                @endif
                             </div>
                             <div class="plat-select-name">{{ $platItem->nom }}</div>
-                            <div class="plat-select-price">{{ number_format($platItem->prix, 2) }} €</div>
+                            <div class="plat-select-price">{{ number_format($platItem->prix, 2) }} FCFA</div>
                             <div class="plat-select-info">
                                 {{ Str::limit($platItem->description, 100) }}
                             </div>
@@ -703,12 +706,15 @@
                             style="{{ !$plat ? 'display: none;' : '' }}">
                             @if($plat)
                             <div class="selected-plat-image">
-                                <img src="{{ $plat->image ? asset('storage/' . $plat->image) : 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=400&q=80' }}"
-                                    alt="{{ $plat->nom }}">
+                                @if($plat->image)
+                                    <img src="{{ asset($plat->image) }}" alt="{{ $plat->nom }}">
+                                @else
+                                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=400&q=80" alt="{{ $plat->nom }}">
+                                @endif
                             </div>
                             <div class="selected-plat-info">
                                 <h3>{{ $plat->nom }}</h3>
-                                <p class="selected-plat-price">{{ number_format($plat->prix, 2) }} €</p>
+                                <p class="selected-plat-price">{{ number_format($plat->prix, 2) }} FCFA</p>
                                 <p class="plat-stock {{ $plat->stock <= 5 ? ($plat->stock == 0 ? 'out' : 'low') : '' }}">
                                     <i class="fas fa-box"></i>
                                     Stock disponible : {{ $plat->stock }}
@@ -753,7 +759,7 @@
                         <div class="price-summary">
                             <div class="price-row">
                                 <span>Prix unitaire :</span>
-                                <span id="unitPrice">0.00 €</span>
+                                <span id="unitPrice">0.00 FCFA</span>
                             </div>
                             <div class="price-row">
                                 <span>Quantité :</span>
@@ -761,7 +767,7 @@
                             </div>
                             <div class="price-row total">
                                 <span>Total :</span>
-                                <span id="totalPrice">0.00 €</span>
+                                <span id="totalPrice">0.00 FCFA</span>
                             </div>
                         </div>
 
@@ -912,7 +918,7 @@
                         </div>
                         <div class="selected-plat-info">
                             <h3>${selectedPlat.name}</h3>
-                            <p class="selected-plat-price">${selectedPlat.price.toFixed(2)} €</p>
+                            <p class="selected-plat-price">${selectedPlat.price.toFixed(2)} FCFA</p>
                             <p class="plat-stock ${selectedPlat.stock <= 5 ? (selectedPlat.stock == 0 ? 'out' : 'low') : ''}">
                                 <i class="fas fa-box"></i>
                                 Stock disponible : ${selectedPlat.stock}
@@ -945,13 +951,13 @@
                 const totalPriceElement = document.getElementById('totalPrice');
 
                 if (selectedPlat) {
-                    unitPriceElement.textContent = selectedPlat.price.toFixed(2) + ' €';
+                    unitPriceElement.textContent = selectedPlat.price.toFixed(2) + ' FCFA';
                     quantityDisplay.textContent = quantity;
-                    totalPriceElement.textContent = (selectedPlat.price * quantity).toFixed(2) + ' €';
+                    totalPriceElement.textContent = (selectedPlat.price * quantity).toFixed(2) + ' FCFA';
                 } else {
-                    unitPriceElement.textContent = '0.00 €';
+                    unitPriceElement.textContent = '0.00 FCFA';
                     quantityDisplay.textContent = '1';
-                    totalPriceElement.textContent = '0.00 €';
+                    totalPriceElement.textContent = '0.00 FCFA';
                 }
             }
 
@@ -996,7 +1002,6 @@
 
             // Pré-sélectionner le plat si passé en paramètre
             @if($plat)
-
             document.addEventListener('DOMContentLoaded', function() {
                 const platCard = document.querySelector(`[data-plat-id="{{ $plat->id }}"]`);
                 if (platCard) {
@@ -1004,7 +1009,6 @@
                 }
             });
             @endif
-
 
             // Validation du formulaire
             document.getElementById('orderForm').addEventListener('submit', function(e) {
@@ -1032,5 +1036,4 @@
         });
     </script>
 </body>
-
 </html>

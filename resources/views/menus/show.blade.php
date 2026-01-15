@@ -508,7 +508,6 @@
             <li><a href="{{ route('plats.index') }}">Plats</a></li>
 
             @auth
-                {{-- Lien Tableau de bord selon le rôle --}}
                 @if(Auth::user()->isAdmin())
                     <li><a href="{{ route('admin.dashboard') }}">Tableau de bord</a></li>
                 @else
@@ -519,11 +518,9 @@
 
         <div class="auth-buttons">
             @guest
-                {{-- Pour les visiteurs non connectés --}}
                 <a href="{{ route('login') }}" class="btn btn-outline">Connexion</a>
                 <a href="{{ route('register') }}" class="btn btn-primary">Inscription</a>
             @else
-                {{-- Pour les utilisateurs connectés --}}
                 <a href="#" class="cart-icon">
                     <i class="fas fa-shopping-cart"></i>
                 </a>
@@ -543,11 +540,13 @@
         <div class="container">
             <div class="menu-detail-container fade-in">
                 <div class="menu-image">
-                    @if($menu->image)
-                    <img src="{{ asset('storage/' . $menu->image) }}" alt="{{ $menu->nom }}">
-                    @else
-                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80" alt="{{ $menu->nom }}">
-                    @endif
+                    @php
+                    $image = ($menu->image && file_exists(public_path($menu->image)))
+                        ? asset($menu->image)
+                        : asset('images/menus/default-menu.jpg');
+                    @endphp
+                    
+                    <img src="{{ $image }}" alt="{{ $menu->nom }}">
                 </div>
 
                 <div class="menu-content">
@@ -589,18 +588,20 @@
                             @foreach($menu->plats as $plat)
                             <li class="plat-item">
                                 <div class="plat-image">
-                                    @if($plat->image)
-                                    <img src="{{ asset('storage/' . $plat->image) }}" alt="{{ $plat->nom }}">
-                                    @else
-                                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=400&q=80" alt="{{ $plat->nom }}">
-                                    @endif
+                                    @php
+                                    $platImage = ($plat->image && file_exists(public_path($plat->image)))
+                                        ? asset($plat->image)
+                                        : asset('images/plats/default-plat.jpg');
+                                    @endphp
+                                    
+                                    <img src="{{ $platImage }}" alt="{{ $plat->nom }}">
                                 </div>
                                 <div class="plat-info">
                                     <div class="plat-name">{{ $plat->nom }}</div>
                                     @if($plat->categorie)
                                     <span class="plat-category">{{ $plat->categorie }}</span>
                                     @endif
-                                    <div class="plat-price">{{ number_format($plat->prix, 2) }} €</div>
+                                    <div class="plat-price">{{ number_format($plat->prix, 2) }} FCFA</div>
                                 </div>
                                 <a href="{{ route('plats.show', $plat->id) }}" class="btn btn-outline" style="flex-shrink: 0;">
                                     <i class="fas fa-eye"></i>
@@ -713,5 +714,4 @@
         });
     </script>
 </body>
-
 </html>

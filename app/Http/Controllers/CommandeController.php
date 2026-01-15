@@ -31,6 +31,9 @@ class CommandeController extends Controller
         return view('commandes.index', compact('commandes'));
     }
 
+    /**
+     * Afficher le formulaire de création de commande
+     */
     public function create(Request $request): View
     {
         $platId = $request->query('plat_id');
@@ -49,6 +52,9 @@ class CommandeController extends Controller
         return view('commandes.create', compact('plats', 'plat'));
     }
 
+    /**
+     * Enregistrer une nouvelle commande
+     */
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
@@ -81,6 +87,9 @@ class CommandeController extends Controller
             ->with('success', 'Commande passée avec succès !');
     }
 
+    /**
+     * Afficher les détails d'une commande
+     */
     public function show(Commande $commande): View
     {
         $this->authorize('view', $commande);
@@ -88,6 +97,9 @@ class CommandeController extends Controller
         return view('commandes.show', compact('commande'));
     }
 
+    /**
+     * Annuler une commande
+     */
     public function cancel(Commande $commande): RedirectResponse
     {
         $this->authorize('update', $commande);
@@ -102,8 +114,4 @@ class CommandeController extends Controller
         return redirect()->route('commandes.index')
             ->with('success', 'Commande annulée avec succès.');
     }
-
-
-   
-
 }

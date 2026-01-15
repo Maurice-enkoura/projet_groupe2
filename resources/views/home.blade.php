@@ -386,14 +386,30 @@
         .menu-card {
             background-color: white;
             border-radius: 10px;
-            padding: 30px;
+            overflow: hidden;
+            padding: 0;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            text-align: center;
             transition: transform 0.3s;
         }
 
         .menu-card:hover {
             transform: translateY(-5px);
+        }
+
+        .menu-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .menu-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .menu-content {
+            padding: 30px;
+            text-align: center;
         }
 
         .menu-icon {
@@ -404,7 +420,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px;
+            margin: -35px auto 20px;
+            position: relative;
+            z-index: 1;
         }
 
         .menu-icon i {
@@ -681,41 +699,45 @@
         .mr-2 {
             margin-right: 0.5rem;
         }
+
+        /* User name style */
+        .user-name {
+            font-weight: 500;
+            color: var(--primary-color);
+        }
     </style>
 </head>
 
 <body>
     <!-- Header -->
+    <header>
+        <div class="container nav-container">
+            <!-- Logo -->
+            <a href="{{ route('home') }}" class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <div class="logo-text">Delice</div>
+            </a>
 
-   <header>
-    <div class="container nav-container">
-        <!-- Logo -->
-        <a href="{{ route('home') }}" class="logo">
-            <div class="logo-icon">
-                <i class="fas fa-utensils"></i>
-            </div>
-            <div class="logo-text">Delice</div>
-        </a>
+            <!-- Menu principal -->
+            <ul class="nav-menu">
+                <li><a href="#home">Accueil</a></li>
+                <li><a href="#plats">Plats</a></li>
+                <li><a href="#menus">Menus</a></li>
+                <li><a href="#contact">Contact</a></li>
 
-        <!-- Menu principal -->
-        <ul class="nav-menu">
-            <li><a href="#home">Accueil</a></li>
-            <li><a href="#plats">Plats</a></li>
-            <li><a href="#menus">Menus</a></li>
-            <li><a href="#contact">Contact</a></li>
-
-            @auth
+                @auth
                 @if(Auth::user()->isAdmin())
-                    <li><a href="{{ route('admin.dashboard') }}">Tableau de bord</a></li>
+                <li><a href="{{ route('admin.dashboard') }}">Tableau de bord</a></li>
                 @else
-                    <li><a href="{{ route('dashboard') }}">Tableau de bord</a></li>
+                <li><a href="{{ route('dashboard') }}">Tableau de bord</a></li>
                 @endif
-            @endauth
-        </ul>
+                @endauth
+            </ul>
 
-    
-        <div class="auth-buttons">
-            @auth
+            <div class="auth-buttons">
+                @auth
                 <!-- Nom de l'utilisateur -->
                 <span class="user-name">Bonjour, {{ Auth::user()->name }}</span>
 
@@ -724,15 +746,14 @@
                     @csrf
                     <button type="submit" class="btn btn-outline">Déconnexion</button>
                 </form>
-            @else
+                @else
                 <!-- Si non connecté -->
                 <a href="{{ route('login') }}" class="btn btn-outline">Connexion</a>
                 <a href="{{ route('register') }}" class="btn btn-primary">Inscription</a>
-            @endauth
+                @endauth
+            </div>
         </div>
-    </div>
-</header>
-
+    </header>
 
     <!-- Hero Section -->
     <section class="hero" id="home">
@@ -762,13 +783,15 @@
                 @foreach($plats->take(6) as $plat)
                 <div class="plat-card fade-in">
                     <div class="plat-image">
-                        @if($plat->image)
-                        <img src="{{ asset('storage/' . $plat->image) }}" alt="{{ $plat->nom }}">
-                        @else
-                        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80" alt="{{ $plat->nom }}">
-                        @endif
+                        @php
+                        $image = ($plat->image && file_exists(public_path($plat->image)))
+                        ? asset($plat->image)
+                        : asset('images/plats/default-plat.jpg');
+                        @endphp
 
-                        @if($plat->menu && $plat->menu->nom)
+                        <img src="{{ $image }}" alt="{{ $plat->nom }}">
+
+                        @if($plat->menu?->nom)
                         <div class="plat-badge">{{ $plat->menu->nom }}</div>
                         @endif
                     </div>
@@ -777,15 +800,21 @@
                         <div class="plat-header">
                             <div>
                                 <h3 class="plat-title">{{ $plat->nom }}</h3>
+
                                 @if($plat->categorie)
-                                <span class="plat-category">{{ $plat->categorie }}</span>
+                                <span class="plat-category">
+                                    {{ ucfirst($plat->categorie) }}
+                                </span>
                                 @endif
                             </div>
-                            <div class="plat-price">{{ number_format($plat->prix, 2) }} FCFA</div>
+
+                            <div class="plat-price">
+                                {{ number_format($plat->prix, 0, ',', ' ') }} FCFA
+                            </div>
                         </div>
 
                         <p class="plat-description">
-                            {{ $plat->description ?? 'Découvrez cette délicieuse spécialité de notre chef.' }}
+                            {{ $plat->description ?: 'Découvrez cette délicieuse spécialité de notre chef.' }}
                         </p>
 
                         <div class="plat-footer">
@@ -800,7 +829,9 @@
                             </div>
 
                             <div class="plat-actions">
-                                <a href="{{ route('plats.show', $plat->id) }}" class="action-btn" title="Voir les détails">
+                                <a href="{{ route('plats.show', $plat) }}"
+                                    class="action-btn"
+                                    title="Voir les détails">
                                     <i class="fas fa-eye"></i>
                                 </a>
                             </div>
@@ -826,7 +857,8 @@
             @endif
         </div>
     </section>
-    <!-- Menus Section - CORRIGÉE -->
+
+    <!-- Menus Section -->
     <section class="section menus-section" id="menus">
         <div class="container">
             <div class="section-title">
@@ -837,7 +869,6 @@
 
             <div class="menus-grid">
                 @if(isset($menus) && $menus->count() > 0)
-
                 @php
                 $icons = [
                 'fas fa-star',
@@ -850,44 +881,60 @@
 
                 @foreach($menus as $index => $menu)
                 <div class="menu-card fade-in">
-                    <div class="menu-icon">
-                        <i class="{{ $icons[$index % count($icons)] }}"></i>
+                    {{-- IMAGE MENU --}}
+                    @php
+                    $menuImage = ($menu->image && file_exists(public_path($menu->image)))
+                    ? asset($menu->image)
+                    : asset('images/menus/default-menu.jpg');
+                    @endphp
+
+                    <div class="menu-image">
+                        <img src="{{ $menuImage }}" alt="{{ $menu->nom }}">
                     </div>
 
-                    <h3 class="menu-name">{{ $menu->nom }}</h3>
+                    <div class="menu-content">
+                        <div class="menu-icon">
+                            <i class="{{ $icons[$index % count($icons)] }}"></i>
+                        </div>
 
-                    <div class="menu-price">
-                        {{ number_format($menu->prix, 0, ',', ' ') }} FCFA
+                        <h3 class="menu-name">{{ $menu->nom }}</h3>
+
+                        <div class="menu-price">
+                            {{ number_format($menu->prix, 0, ',', ' ') }} FCFA
+                        </div>
+
+                        <ul class="menu-features">
+                            @if($menu->description)
+                            @php
+                            $features = array_slice(
+                            array_filter(explode('.', $menu->description)),
+                            0,
+                            5
+                            );
+                            @endphp
+
+                            @foreach($features as $feature)
+                            <li>
+                                <i class="fas fa-check"></i>
+                                {{ trim($feature) }}
+                            </li>
+                            @endforeach
+                            @else
+                            <li><i class="fas fa-check"></i> Sélection du chef</li>
+                            <li><i class="fas fa-check"></i> Entrée au choix</li>
+                            <li><i class="fas fa-check"></i> Plat principal</li>
+                            <li><i class="fas fa-check"></i> Dessert</li>
+                            <li><i class="fas fa-check"></i> Boisson</li>
+                            @endif
+                        </ul>
+
+                        <a href="{{ route('menus.show', $menu) }}"
+                            class="btn {{ $index === 1 ? 'btn-primary' : 'btn-outline' }}"
+                            style="width: 100%; margin-top: 10px;">
+                            {!! $index === 1 ? '<i class="fas fa-book-open mr-2"></i>' : '' !!}
+                            Voir ce menu
+                        </a>
                     </div>
-
-                    <ul class="menu-features">
-                        @if($menu->description)
-                        @php
-                        $features = array_slice(
-                        array_filter(explode('.', $menu->description)),
-                        0,
-                        5
-                        );
-                        @endphp
-
-                        @foreach($features as $feature)
-                        <li><i class="fas fa-check"></i> {{ trim($feature) }}</li>
-                        @endforeach
-                        @else
-                        <li><i class="fas fa-check"></i> Sélection du chef</li>
-                        <li><i class="fas fa-check"></i> Entrée au choix</li>
-                        <li><i class="fas fa-check"></i> Plat principal</li>
-                        <li><i class="fas fa-check"></i> Dessert</li>
-                        <li><i class="fas fa-check"></i> Boisson</li>
-                        @endif
-                    </ul>
-
-                    <a href="{{ route('menus.show', $menu->id) }}"
-                        class="btn {{ $index === 1 ? 'btn-primary' : 'btn-outline' }}"
-                        style="width: 100%; margin-top: 10px;">
-                        {!! $index === 1 ? '<i class="fas fa-book-open mr-2"></i>' : '' !!}
-                        Voir ce menu
-                    </a>
                 </div>
                 @endforeach
 
