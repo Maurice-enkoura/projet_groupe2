@@ -64,13 +64,18 @@ Ce projet est réalisé dans le cadre d’un travail collaboratif.
 - Gestion des utilisateurs et permissions
 - Statistiques et rapports
 
-### **Mauricia Ibata** 
-**Rôle principal** : Système 
+### **Mauricia Ibata** - Développeuse Authentification & Sécurité
+**Responsabilités principales :**
+- ~~Système d'inscription des utilisateurs~~ *(fait par Maurice - problèmes techniques)*
+- ~~Gestion de la connexion et déconnexion~~ *(fait par Maurice - problèmes techniques)*
+- ~~Validation des formulaires d'authentification~~ *(fait par Maurice - problèmes techniques)*
 
-#### **Tâches attribuées :**
-- Inscription des utilisateurs
-- Connexion
-- déconnexion
+## 🚧 Problèmes Techniques Rencontrés
+
+### **Problèmes d'installation (Mauricia Ibata)**
+- Difficultés avec l'installation de Composer et dépendances
+- Problèmes de configuration de l'environnement Laravel
+- Impossibilité de lancer le serveur localement
 
 
 ## Structure Technique par Membre
