@@ -25,4 +25,21 @@ class HomeController extends Controller
     return view('home', compact('menus', 'plats'));
 }
 
+/**
+     * Dashboard utilisateur
+     */
+    public function dashboard()
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        $commandesRecentes = $user->commandes()
+            ->with('plat')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return view('dashboard', compact('user', 'commandesRecentes'));
+    }
+
 }

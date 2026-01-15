@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tableau de bord - Restaurant Delice</title>
+    <title>Mes Commandes - Restaurant Delice</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -152,36 +152,17 @@
             background-color: #218838;
         }
 
-        .btn-warning {
-            background-color: var(--warning-color);
-            color: var(--dark-color);
-        }
-
-        .btn-warning:hover {
-            background-color: #e0a800;
-        }
-
-        .btn-info {
-            background-color: var(--info-color);
-            color: white;
-        }
-
-        .btn-info:hover {
-            background-color: #138496;
-        }
-
-        /* Dashboard Layout */
-        .dashboard-section {
+        /* Orders Section */
+        .orders-section {
             padding: 120px 0 80px;
             min-height: 100vh;
         }
 
-        .dashboard-header {
+        .page-header {
             margin-bottom: 40px;
-            text-align: center;
         }
 
-        .welcome-title {
+        .page-title {
             font-size: 32px;
             font-weight: 700;
             margin-bottom: 10px;
@@ -189,168 +170,71 @@
             font-family: 'Georgia', serif;
         }
 
-        .welcome-subtitle {
+        .page-subtitle {
             font-size: 18px;
             color: var(--gray-color);
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
 
-        .welcome-user {
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-
-        /* Dashboard Grid */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-bottom: 50px;
-        }
-
-        .stat-card {
-            background-color: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 5px;
-            height: 100%;
-        }
-
-        .stat-card.orders::before {
-            background-color: var(--primary-color);
-        }
-
-        .stat-card.amount::before {
-            background-color: var(--success-color);
-        }
-
-        .stat-card.pending::before {
-            background-color: var(--warning-color);
-        }
-
-        .stat-card.delivered::before {
-            background-color: var(--info-color);
-        }
-
-        .stat-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .stat-card.orders .stat-icon {
-            background-color: rgba(196, 30, 58, 0.1);
-        }
-
-        .stat-card.amount .stat-icon {
-            background-color: rgba(40, 167, 69, 0.1);
-        }
-
-        .stat-card.pending .stat-icon {
-            background-color: rgba(255, 193, 7, 0.1);
-        }
-
-        .stat-card.delivered .stat-icon {
-            background-color: rgba(23, 162, 184, 0.1);
-        }
-
-        .stat-icon i {
-            font-size: 24px;
-        }
-
-        .stat-card.orders .stat-icon i {
-            color: var(--primary-color);
-        }
-
-        .stat-card.amount .stat-icon i {
-            color: var(--success-color);
-        }
-
-        .stat-card.pending .stat-icon i {
-            color: var(--warning-color);
-        }
-
-        .stat-card.delivered .stat-icon i {
-            color: var(--info-color);
-        }
-
-        .stat-content h3 {
-            font-size: 14px;
-            color: var(--gray-color);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-        }
-
-        .stat-number {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        .stat-trend {
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .trend-up {
-            color: var(--success-color);
-        }
-
-        .trend-down {
-            color: var(--primary-color);
-        }
-
-        /* Recent Orders Section */
-        .recent-orders {
+        /* Orders Container */
+        .orders-container {
             background-color: white;
             border-radius: 15px;
             padding: 30px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
         }
 
-        .section-title {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 25px;
-            color: var(--secondary-color);
+        .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
-        .section-title a {
-            font-size: 14px;
+        .section-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        .orders-count {
+            font-size: 16px;
+            color: var(--gray-color);
+        }
+
+        .orders-count span {
             color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
         }
 
-        .section-title a:hover {
-            text-decoration: underline;
+        /* Filter Section */
+        .filter-section {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
         }
 
+        .filter-btn {
+            padding: 8px 20px;
+            background-color: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Orders Table */
         .orders-table {
             width: 100%;
             border-collapse: collapse;
@@ -358,7 +242,7 @@
 
         .orders-table th {
             text-align: left;
-            padding: 12px 15px;
+            padding: 15px;
             background-color: #f8f9fa;
             font-weight: 600;
             color: var(--gray-color);
@@ -375,9 +259,46 @@
             background-color: #f8f9fa;
         }
 
+        .order-id {
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        .plat-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .plat-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .plat-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .plat-details h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .plat-details p {
+            font-size: 14px;
+            color: var(--gray-color);
+        }
+
         .order-status {
             display: inline-block;
-            padding: 5px 12px;
+            padding: 6px 15px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
@@ -458,13 +379,36 @@
             color: var(--dark-color);
         }
 
-        /* Quick Actions */
-        .quick-actions {
+        /* Pagination */
+        .pagination {
             display: flex;
-            gap: 20px;
-            margin-top: 40px;
             justify-content: center;
-            flex-wrap: wrap;
+            list-style: none;
+            margin-top: 40px;
+        }
+
+        .page-item {
+            margin: 0 5px;
+        }
+
+        .page-link {
+            display: block;
+            padding: 8px 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .page-link:hover {
+            background-color: #f8f9fa;
+        }
+
+        .page-item.active .page-link {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
         }
 
         /* Footer */
@@ -574,16 +518,21 @@
                 display: none;
             }
 
-            .dashboard-section {
+            .orders-section {
                 padding: 100px 0 60px;
             }
 
-            .welcome-title {
+            .page-title {
                 font-size: 24px;
             }
 
-            .dashboard-grid {
-                grid-template-columns: 1fr;
+            .orders-container {
+                padding: 20px;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
             }
 
             .orders-table {
@@ -591,14 +540,14 @@
                 overflow-x: auto;
             }
 
-            .quick-actions {
+            .plat-info {
                 flex-direction: column;
-                align-items: center;
+                align-items: flex-start;
             }
 
-            .quick-actions .btn {
-                width: 100%;
-                max-width: 300px;
+            .plat-image {
+                width: 80px;
+                height: 80px;
             }
         }
 
@@ -607,43 +556,13 @@
                 padding: 0 15px;
             }
 
-            .stat-card {
-                padding: 20px;
+            .filter-section {
+                justify-content: center;
             }
 
-            .recent-orders {
-                padding: 20px;
-            }
-
-            .section-title {
+            .order-actions {
                 flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
             }
-        }
-
-        /* Badge */
-        .badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .badge-primary {
-            background-color: rgba(196, 30, 58, 0.1);
-            color: var(--primary-color);
-        }
-
-        .badge-success {
-            background-color: rgba(40, 167, 69, 0.1);
-            color: var(--success-color);
-        }
-
-        .badge-warning {
-            background-color: rgba(255, 193, 7, 0.1);
-            color: #856404;
         }
 
         /* Animation */
@@ -666,152 +585,80 @@
 
 <body>
     <!-- Header -->
-  <header>
-    <div class="container nav-container">
-        <a href="{{ route('home') }}" class="logo">
-            <div class="logo-icon">
-                <i class="fas fa-utensils"></i>
-            </div>
-            <div class="logo-text">Delice</div>
-        </a>
-
-        <ul class="nav-menu">
-            <li><a href="{{ route('home') }}">Accueil</a></li>
-            <li><a href="{{ route('menus.index') }}">Menus</a></li>
-            <li><a href="{{ route('plats.index') }}">Plats</a></li>
-
-            @auth
-                @if(Auth::user()->isAdmin())
-                    <li><a href="{{ route('admin.dashboard') }}">Tableau de bord</a></li>
-                @else
-                    <li><a href="{{ route('dashboard') }}">Tableau de bord</a></li>
-                @endif
-            @endauth
-        </ul>
-
-        <div class="auth-buttons">
-            <a href="#" class="cart-icon">
-                <i class="fas fa-shopping-cart"></i>
+    <header>
+        <div class="container nav-container">
+            <a href="{{ route('home') }}" class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <div class="logo-text">Delice</div>
             </a>
 
-            @guest
-                <a href="{{ route('login') }}" class="btn btn-outline">Connexion</a>
-                <a href="{{ route('register') }}" class="btn btn-primary">Inscription</a>
-            @else
+            <ul class="nav-menu">
+                <li><a href="{{ route('home') }}">Accueil</a></li>
+                <li><a href="{{ route('menus.index') }}">Menus</a></li>
+                <li><a href="{{ route('plats.index') }}">Plats</a></li>
+                <li><a href="{{ route('dashboard') }}">Tableau de bord</a></li>
+            </ul>
+
+            <div class="auth-buttons">
+                <a href="{{ route('commandes.create') }}" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Nouvelle commande
+                </a>
                 <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                     @csrf
                     <button type="submit" class="btn btn-outline" style="padding: 10px 20px;">
                         Déconnexion
                     </button>
                 </form>
-            @endguest
+            </div>
         </div>
-    </div>
-</header>
+    </header>
 
-
-    <!-- Dashboard Section -->
-    <section class="dashboard-section">
+    <!-- Orders Section -->
+    <section class="orders-section">
         <div class="container">
-            <!-- Welcome Header -->
-            <div class="dashboard-header fade-in">
-                <h1 class="welcome-title">Bienvenue, <span class="welcome-user">{{ $user->name }}</span> !</h1>
-                <p class="welcome-subtitle">Gérez vos commandes et profitez de vos avantages clients</p>
+            <!-- Page Header -->
+            <div class="page-header fade-in">
+                <h1 class="page-title">Mes Commandes</h1>
+                <p class="page-subtitle">Consultez l'historique et le statut de toutes vos commandes</p>
                 
-                <div class="quick-actions">
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <a href="{{ route('dashboard') }}" class="btn btn-outline">
+                        <i class="fas fa-arrow-left"></i> Retour au tableau de bord
+                    </a>
                     <a href="{{ route('commandes.create') }}" class="btn btn-primary">
                         <i class="fas fa-plus-circle"></i> Nouvelle commande
                     </a>
-                    <a href="{{ route('plats.index') }}" class="btn btn-outline">
-                        <i class="fas fa-utensils"></i> Voir les plats
-                    </a>
-                    <a href="{{ route('home') }}" class="btn btn-outline">
-                        <i class="fas fa-home"></i> Retour à l'accueil
-                    </a>
                 </div>
             </div>
 
-            <!-- Stats Cards -->
-            <div class="dashboard-grid fade-in">
-                @php
-                    $totalCommandes = $user->commandes()->count();
-                    $totalAmount = $user->commandes()->sum('total');
-                    $pendingCommandes = $user->commandes()->where('statut', 'en_attente')->count();
-                    $deliveredCommandes = $user->commandes()->where('statut', 'livree')->count();
-                @endphp
-
-                <div class="stat-card orders fade-in">
-                    <div class="stat-icon">
-                        <i class="fas fa-shopping-bag"></i>
-                    </div>
-                    <div class="stat-content">
-                        <h3>Commandes totales</h3>
-                        <div class="stat-number">{{ $totalCommandes }}</div>
-                        <div class="stat-trend trend-up">
-                            <i class="fas fa-chart-line"></i>
-                            Vos achats
+            <!-- Orders Container -->
+            <div class="orders-container fade-in">
+                <div class="section-header">
+                    <div>
+                        <h2 class="section-title">Historique des commandes</h2>
+                        <div class="orders-count">
+                            Total : <span>{{ $commandes->total() }}</span> commande(s)
                         </div>
                     </div>
                 </div>
 
-                <div class="stat-card amount fade-in">
-                    <div class="stat-icon">
-                        <i class="fas fa-euro-sign"></i>
-                    </div>
-                    <div class="stat-content">
-                        <h3>Montant total</h3>
-                        <div class="stat-number">{{ number_format($totalAmount, 2) }} FCA</div>
-                        <div class="stat-trend trend-up">
-                            <i class="fas fa-wallet"></i>
-                            Dépensé
-                        </div>
-                    </div>
+                <!-- Filter Section -->
+                <div class="filter-section">
+                    <button class="filter-btn active" data-status="all">Toutes</button>
+                    <button class="filter-btn" data-status="en_attente">En attente</button>
+                    <button class="filter-btn" data-status="en_cours">En cours</button>
+                    <button class="filter-btn" data-status="livree">Livrées</button>
+                    <button class="filter-btn" data-status="annulee">Annulées</button>
                 </div>
 
-                <div class="stat-card pending fade-in">
-                    <div class="stat-icon">
-                        <i class="fas fa-clock"></i>
-                    </div>
-                    <div class="stat-content">
-                        <h3>En attente</h3>
-                        <div class="stat-number">{{ $pendingCommandes }}</div>
-                        <div class="stat-trend">
-                            <i class="fas fa-hourglass-half"></i>
-                            À traiter
-                        </div>
-                    </div>
-                </div>
-
-                <div class="stat-card delivered fade-in">
-                    <div class="stat-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <div class="stat-content">
-                        <h3>Livrées</h3>
-                        <div class="stat-number">{{ $deliveredCommandes }}</div>
-                        <div class="stat-trend trend-up">
-                            <i class="fas fa-truck"></i>
-                            Terminées
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Recent Orders -->
-            <div class="recent-orders fade-in">
-                <div class="section-title">
-                    <h2>Commandes récentes</h2>
-                    <a href="{{ route('commandes.index') }}">
-                        <i class="fas fa-list"></i> Voir toutes les commandes
-                    </a>
-                </div>
-
-                @if($commandesRecentes && $commandesRecentes->count() > 0)
+                @if($commandes->count() > 0)
                     <div class="table-responsive">
                         <table class="orders-table">
                             <thead>
                                 <tr>
-                                    <th>N° Commande</th>
+                                    <th>Commande</th>
                                     <th>Plat</th>
                                     <th>Date</th>
                                     <th>Quantité</th>
@@ -821,15 +668,35 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($commandesRecentes as $commande)
-                                    <tr>
-                                        <td>#{{ str_pad($commande->id, 6, '0', STR_PAD_LEFT) }}</td>
+                                @foreach($commandes as $commande)
+                                    <tr class="order-row" data-status="{{ $commande->statut }}">
                                         <td>
-                                            <strong>{{ $commande->plat->nom }}</strong>
+                                            <div class="order-id">
+                                                #{{ str_pad($commande->id, 6, '0', STR_PAD_LEFT) }}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="plat-info">
+                                                <div class="plat-image">
+                                                    @if($commande->plat->image)
+                                                        <img src="{{ asset('storage/' . $commande->plat->image) }}" 
+                                                             alt="{{ $commande->plat->nom }}">
+                                                    @else
+                                                        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=400&q=80" 
+                                                             alt="{{ $commande->plat->nom }}">
+                                                    @endif
+                                                </div>
+                                                <div class="plat-details">
+                                                    <h4>{{ $commande->plat->nom }}</h4>
+                                                    <p>{{ Str::limit($commande->plat->description, 50) }}</p>
+                                                </div>
+                                            </div>
                                         </td>
                                         <td>{{ $commande->created_at->format('d/m/Y H:i') }}</td>
                                         <td>{{ $commande->quantite }}</td>
-                                        <td>{{ number_format($commande->total, 2) }} FCA</td>
+                                        <td>
+                                            <strong>{{ number_format($commande->total, 2) }} €</strong>
+                                        </td>
                                         <td>
                                             @php
                                                 $statusClass = [
@@ -871,10 +738,17 @@
                             </tbody>
                         </table>
                     </div>
+
+                    <!-- Pagination -->
+                    @if($commandes->hasPages())
+                        <div class="pagination">
+                            {{ $commandes->links('pagination::simple-bootstrap') }}
+                        </div>
+                    @endif
                 @else
                     <div class="empty-state">
                         <i class="fas fa-shopping-bag"></i>
-                        <h3>Aucune commande récente</h3>
+                        <h3>Aucune commande</h3>
                         <p>Vous n'avez pas encore passé de commande.</p>
                         <a href="{{ route('commandes.create') }}" class="btn btn-primary mt-3">
                             <i class="fas fa-plus-circle"></i> Passer votre première commande
@@ -957,16 +831,36 @@
 
             <div class="copyright">
                 <p>&copy; <span id="currentYear">{{ date('Y') }}</span> Restaurant Delice. Tous droits réservés.</p>
-                <p style="margin-top: 10px; font-size: 12px;">
-                    Connecté en tant que : {{ $user->email }}
-                </p>
             </div>
         </div>
     </footer>
 
     <script>
-        // Initialisation
+        // Filtrage des commandes
         document.addEventListener('DOMContentLoaded', function() {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const orderRows = document.querySelectorAll('.order-row');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Retirer la classe active de tous les boutons
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    // Ajouter la classe active au bouton cliqué
+                    this.classList.add('active');
+
+                    const selectedStatus = this.dataset.status;
+
+                    // Filtrer les lignes
+                    orderRows.forEach(row => {
+                        if (selectedStatus === 'all' || row.dataset.status === selectedStatus) {
+                            row.style.display = 'table-row';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
             // Afficher l'année en cours dans le footer
             document.getElementById('currentYear').textContent = new Date().getFullYear();
         });
