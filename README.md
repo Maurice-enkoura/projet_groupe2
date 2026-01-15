@@ -35,11 +35,47 @@ Ce projet est réalisé dans le cadre d’un travail collaboratif.
 
 ---
 
-##  Membres du groupe et rôles
+## 👥 Membres du Groupe et Rôles
 
-Maurice Enkoura
-Maty Mbaye
-Mauricia etaba
+### **Maurice Enkoura** - Développeur Backend & Architecte
+**Rôle principal** : Implémentation complète du système restaurant
+
+#### **Tâches réalisées :**
+- **Architecture** : Configuration initiale du projet Laravel
+- **Modèles & Relations** : User, Menu, Plat, Commande avec relations Eloquent
+- **Authentification** : Système de rôles (admin/user) 
+- **Sécurité** : Middleware `EnsureIsAdmin` et policies d'autorisation
+- **Base de données** : Migrations et seeders avec données de test réalistes
+- **Interface visiteur** : Consultation des menus/plats sans authentification
+- **Dashboard client** : Interface utilisateur connecté
+- **Gestion des rôles** : Visiteur, Utilisateur, Administrateur
+- **Accès différencié** : 
+  - Visiteur : consultation uniquement
+  - Utilisateur : CRUD partiel
+  - Administrateur : CRUD complet
+
+### **Maty Mbaye** - Développeur Frontend & Interface Admin
+**Rôle principal** : Développement de l'interface administrateur
+
+#### **Tâches attribuées :**
+- Dashboard administrateur complet
+- CRUD complet pour la gestion des restaurants
+- Interface de gestion des commandes
+- Gestion des utilisateurs et permissions
+- Statistiques et rapports
+
+### **Mauricia Ibata** 
+**Rôle principal** : Système 
+
+#### **Tâches attribuées :**
+- Inscription des utilisateurs
+- Connexion
+- déconnexion
+
+
+## Structure Technique par Membre
+
+### **Maurice Enkoura**
 
 ## ⚙️ Installation du projet
 
